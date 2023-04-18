@@ -15,6 +15,13 @@ async def list_games():
     }
 
 
+@app.post("/register-as-a-player/")
+async def register_as_a_player(name: str):
+    return storage.register_player(name)
+
+
+
+
 @app.post("/create-game/")
 async def create_game():
     return storage.create_game()
@@ -64,9 +71,9 @@ def check_winner(game: dict) -> str | None:
     return None
 
 
-@app.post("/game/{game_id}/move/")
-async def make_move(game_id: int, move: schemas.Move):
-    game = storage.get_game(game_id)
+@app.post("/game/{game_id}/{player_id}/move/")
+async def make_move(game_id: int,player_id:int, move: schemas.Move):
+    game = storage.get_game(game_id ,player_id)
 
     if game is None:
         raise HTTPException(status_code=404, detail="Game not found")

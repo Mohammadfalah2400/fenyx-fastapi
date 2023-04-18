@@ -1,6 +1,5 @@
 import argparse
 import json
-
 import requests
 
 BASE_URL = "localhost:8000"
@@ -23,11 +22,21 @@ def parse_args():
             "list-games",
             "create-game",
             "make-move",
+            "register-as-a-player",
         ],
         help="Action to perform",
     )
     return parser.parse_args()
 
+def register_as_a_player():
+    response = requests.post(
+        f"http://{BASE_URL}/register-as-a-player/",
+    )
+    if not check_response(response):
+        return
+
+    print(response.json())
+    
 
 def list_games():
     response = requests.get(
@@ -49,6 +58,7 @@ def create_game():
 
 
 def make_move():
+    player = int(input("Player ID"))
     game_id = int(input("Game ID: "))
     row = int(input("Row: "))
     col = int(input("Col: "))
@@ -77,6 +87,8 @@ def main():
         create_game()
     elif args.action == "make-move":
         make_move()
+    elif args.action == "register-as-a-player":
+        register_as_a_player()
     else:
         raise ValueError(f"Unknown action: {args.action}")
 
