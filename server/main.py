@@ -20,7 +20,9 @@ async def register_as_a_player(name: str):
     return storage.register_player(name)
 
 
-
+@app.post("/join_existing_games/")
+async def join_existing_games(game_id : int) : 
+    return storage.join_existing_games(game_id)
 
 @app.post("/create-game/")
 async def create_game():
@@ -71,9 +73,9 @@ def check_winner(game: dict) -> str | None:
     return None
 
 
-@app.post("/game/{game_id}/{player_id}/move/")
-async def make_move(game_id: int,player_id:int, move: schemas.Move):
-    game = storage.get_game(game_id ,player_id)
+@app.post("/game/{game_id}/{player_id}/{player_id_2}/move/")
+async def make_move(game_id: int,player_id:int,player_id_2:int, move: schemas.Move):
+    game = storage.get_game(game_id ,player_id,player_id_2)
 
     if game is None:
         raise HTTPException(status_code=404, detail="Game not found")

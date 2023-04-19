@@ -56,6 +56,13 @@ def create_game():
 
     print(response.json())
 
+def join_existing_games():
+    response =requests.get(f"http://{BASE_URL}/join_existing_games/")
+    if not check_response(response):
+        return
+
+    print(response.json())
+ 
 
 def make_move():
     player = int(input("Player ID"))
