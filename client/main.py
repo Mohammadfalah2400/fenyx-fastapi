@@ -23,6 +23,7 @@ def parse_args():
             "create-game",
             "make-move",
             "register-as-a-player",
+            "join_existing_games"
         ],
         help="Action to perform",
     )
@@ -96,6 +97,8 @@ def main():
         make_move()
     elif args.action == "register-as-a-player":
         register_as_a_player()
+    elif args.action == "join_existing_games":
+        join_existing_games()
     else:
         raise ValueError(f"Unknown action: {args.action}")
 
