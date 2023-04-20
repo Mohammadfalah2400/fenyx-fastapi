@@ -16,6 +16,7 @@ async def list_games():
 
 @app.get("/score/")
 async def score():
+    print_board()
     return{
         "score": storage.get_score(counter1 , counter2),
     }
@@ -54,6 +55,7 @@ def check_winner(game: dict) -> str | None:
     ... })
     'o'
     """
+    global field
     field = game["field"]
     for row in field:
         if row[0] == row[1] == row[2] and row[0] is not None:
@@ -77,6 +79,13 @@ def check_winner(game: dict) -> str | None:
         return field[0][2]
 
     return None
+
+def print_board():
+    for row in range(3):
+        print("|".join(field[row]))
+        if row !=2 :
+            print("---------------------------")
+
 
 
 @app.post("/game/{game_id}/{player_id}/{player_id_2}/move/")
