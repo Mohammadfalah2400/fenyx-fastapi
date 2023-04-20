@@ -23,7 +23,8 @@ def parse_args():
             "create-game",
             "make-move",
             "register-as-a-player",
-            "join_existing_games"
+            "join_existing_games",
+            "player_score",
         ],
         help="Action to perform",
     )
@@ -38,6 +39,18 @@ def register_as_a_player():
 
     print(response.json())
     
+def score():
+    response = requests.get(
+        f"http://{BASE_URL}/score/",
+    )
+    if not check_response(response):
+        return
+
+    data = response.json()
+    print(json.dumps(data, indent=4))
+
+
+
 
 def list_games():
     response = requests.get(
@@ -48,6 +61,7 @@ def list_games():
 
     data = response.json()
     print(json.dumps(data, indent=4))
+
 
 
 def create_game():
@@ -99,6 +113,8 @@ def main():
         register_as_a_player()
     elif args.action == "join_existing_games":
         join_existing_games()
+    elif args.action == "player_score":
+        score()
     else:
         raise ValueError(f"Unknown action: {args.action}")
 

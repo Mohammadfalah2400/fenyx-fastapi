@@ -14,6 +14,12 @@ async def list_games():
         "games": storage.get_games(),
     }
 
+@app.get("/score/")
+async def score():
+    return{
+        "score": storage.get_score(counter1 , counter2),
+    }
+
 
 @app.post("/register-as-a-player/")
 async def register_as_a_player(name: str):
@@ -95,10 +101,18 @@ async def make_move(game_id: int,player_id:int,player_id_2:int, move: schemas.Mo
     winner = check_winner(game)
 
     storage.update_game(game_id, game)
+    global counter1
+    global counter2
+    counter1 = 0
+    counter2 = 0
 
     resp = {"status": "ok"}
     if winner is not None:
         resp["winner"] = winner
+        counter1 += 1 
+    elif winner is None :
+        resp["not winner"] = winner
+        counter2 +=1
 
     return resp
 

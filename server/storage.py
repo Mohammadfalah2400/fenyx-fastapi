@@ -18,9 +18,22 @@ _GAMES_STORAGE = {
     },
 }
 
+_PLAYER_SORTED = {
+     1:{
+     "score_player1":0,
+     "score_player2":0,
+     }
+}
 
+def get_score(counter1, counter2 ):
 
-
+    _PLAYER_SORTED[counter1 , counter2] = {
+         1:{
+         "score_player1": counter1,
+         "score_player2" : counter2,
+         }
+    }
+    return _PLAYER_SORTED[counter1,counter2]
 
 def get_games():
     return list(_GAMES_STORAGE.values())
