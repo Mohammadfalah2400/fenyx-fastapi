@@ -7,6 +7,7 @@ _GAMES_STORAGE = {
         "id": 1,
         "player_id":1,
         "player_id_2":1,
+        "game_side":game_side_,
         "status": "new",
         "number of the players":1,
         "current_move": "x",
@@ -59,11 +60,12 @@ def join_existing_games(game_id):
 def create_game():
     id_ = len(_GAMES_STORAGE) + 1
 
-    _GAMES_STORAGE[id_ , player_id ,player_id_2] = {
+    _GAMES_STORAGE[id_ , player_id ,player_id_2,game_side_] = {
         "id": id_,
         "player_id" : player_id,
         "player_id_2" :player_id_2, 
         "status": "new",
+        "game_side":game_side_,
         "current_move": "x",
         "field": [
             [None, None, None],
@@ -72,12 +74,14 @@ def create_game():
         ],
     }
 
-    return _GAMES_STORAGE[id_ ,player_id]
+    return _GAMES_STORAGE[id_ ,player_id,player_id_2,game_side_]
 
 
-def get_game(id: int) -> dict | None:
-    game = _GAMES_STORAGE.get(id , player_id,player_id_2)
-    return copy.deepcopy(game , player_id,player_id_2)
+def get_game(id: int, player_id:int, player_id_2:int ,game_side:str) -> dict | None:
+    global game_side_
+    game_side_ = game_side
+    game = _GAMES_STORAGE.get(id , player_id,player_id_2 , game_side)
+    return copy.deepcopy(game , player_id,player_id_2, game_side)
 
 
 def update_game(id: int,player_id:int,player_id_2:int ,  data: dict):

@@ -82,16 +82,17 @@ def join_existing_games():
 def make_move():
     player = int(input("Player ID"))
     game_id = int(input("Game ID: "))
+    game_side = str(input("whats is your part?(x / o)"))
     row = int(input("Row: "))
     col = int(input("Col: "))
-    player = input("Player: ")
 
     response = requests.post(
-        f"http://{BASE_URL}/game/{game_id}/move/",
+        f"http://{BASE_URL}/game/{game_id}/{game_side}{player}/move/",
         json={
             "row": row,
             "col": col,
             "player": player,
+            "game_side":game_side
         },
     )
     if not check_response(response):

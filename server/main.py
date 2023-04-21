@@ -88,13 +88,16 @@ def print_board():
 
 
 
-@app.post("/game/{game_id}/{player_id}/{player_id_2}/move/")
-async def make_move(game_id: int,player_id:int,player_id_2:int, move: schemas.Move):
-    game = storage.get_game(game_id ,player_id,player_id_2)
+@app.post("/game/{game_id}/{player_id}/{player_id_2}/{game_side}/move/")
+async def make_move(game_id: int,player_id:int,player_id_2:int,game_side:str ,move: schemas.Move):
+    game = storage.get_game(game_id ,player_id,player_id_2,game_side)
 
     if game is None:
         raise HTTPException(status_code=404, detail="Game not found")
-
+    if player_id is None : 
+        raise HTTPException(status_code=404 , detail="player id not found ")
+    if player_id_2 is None : 
+        raise HTTPException(status_code= 404 , detail="player id 2 not found ")
     if game["status"] != "new":
         raise HTTPException(status_code=400, detail="Game is not new")
 
@@ -104,7 +107,7 @@ async def make_move(game_id: int,player_id:int,player_id_2:int, move: schemas.Mo
     if game["current_move"] != move.player:
         raise HTTPException(status_code=400, detail="Wrong player")
 
-    game["current_move"] = "x" if move.player == "o" else "o"
+    game["current_move"] = game_side  if move.player == "o" else "x"
     game["field"][move.row][move.col] = move.player
 
     winner = check_winner(game)
